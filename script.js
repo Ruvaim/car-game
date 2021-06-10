@@ -55,6 +55,14 @@ function endGame(){
     player.start = false;
     startScreen.classList.remove('hide');
     startScreen.innerHTML = "Game Over <br> Your Final Score is " + player.score + "<br> Press Here To Restart The Game.";
+    reset();
+}
+
+function reset(){
+    player = {
+        speed : 5,
+        score : "",
+    }
 }
 
 function moveEnemy(car){
@@ -62,7 +70,7 @@ function moveEnemy(car){
     enemy.forEach( (item) => {
 
         if (isCollide (car,item)) {
-            console.log("BHOOM");
+            // console.log("BHOOM");
             endGame();
         }
 
@@ -88,6 +96,7 @@ function start() {
     player.score = 0;
     window.requestAnimationFrame(gamePlay);
 
+    
     for (x = 0; x < 5; x++) {
         let roadLine = document.createElement('div');
         roadLine.classList.add("lines");
@@ -95,7 +104,7 @@ function start() {
         roadLine.style.top = (roadLine.y) + "px";
         gameArea.appendChild(roadLine);
     }
-
+    
 
     let car = document.createElement('div');
     // car.setAttribute("class", "car"),
@@ -106,10 +115,10 @@ function start() {
 
     player.x = car.offsetLeft;
     player.y = car.offsetTop;
-
+    
     // console.log(car.offsetTop);
     // console.log(car.offsetLeft);
-
+    
     for (x = 0; x < 3; x++) {
         let enemyCar = document.createElement('div');
         enemyCar.classList.add("enemy");
@@ -119,6 +128,7 @@ function start() {
         enemyCar.style.left = Math.floor(Math.random() * 350 ) + "px";
         gameArea.appendChild(enemyCar);
     }
+    
 
 }
 
@@ -131,7 +141,7 @@ function gamePlay() {
 
         moveLines();
         moveEnemy(car);
-
+        
         if (keys.ArrowUp && player.y > (road.top + 100)) { player.y -= player.speed }
         if (keys.ArrowDown && player.y < (road.bottom - 70)) { player.y += player.speed }
         if (keys.ArrowLeft && player.x > 0) { player.x -= player.speed }
@@ -142,9 +152,19 @@ function gamePlay() {
 
         window.requestAnimationFrame(gamePlay);
         console.log(player.score);
-
+        
         player.score++;
         let ps = player.score - 1;
         score.innerText = "Score : " + ps;
+        
+        if (player.score > 500) {
+            player.speed = 7;
+        }
+        if (player.score > 1000) {
+            player.speed = 10;
+        }
+        if (player.score > 1500) {
+            player.speed = 15;
+        }
     }
 }
